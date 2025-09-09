@@ -52,7 +52,7 @@ def create_splits():
 
     train_df, temp_df = train_test_split(
         data_df,
-        test_size=0.2, # Reserve 20% for val and test
+        test_size=0.3, # Reserve 30% for val and test
         random_state=42,
         stratify=data_df['label']
     )
