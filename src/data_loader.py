@@ -4,7 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
 from pathlib import Path
-
+import os
 
 class PetDataset(Dataset):
     """Custom Dataset for the Oxford-IIIT Pet Dataset."""
@@ -81,18 +81,17 @@ def create_dataloaders(
     tuple[DataLoader, DataLoader, DataLoader, list[str]]
         A tuple containing the train, validation, and test DataLoaders, and the list of class names.
     """
-    # Define the image transformations. These should be informed by your EDA.
-    # Normalization values are standard for ImageNet-pretrained models.
     train_transform = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        # Add augmentations justified by your EDA here (e.g., RandomRotation, ColorJitter)
+        transforms.RandomResizedCrop(size=image_size, scale=(0.5, 1.0)),
         transforms.RandomHorizontalFlip(),
+        transforms.TrivialAugmentWide(),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
     val_test_transform = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
+        transforms.Resize(int(image_size * 1.14)),
+        transforms.CenterCrop(image_size),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
