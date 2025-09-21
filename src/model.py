@@ -4,18 +4,7 @@ from torch import nn
 from torch.nn import functional as F
 from peft import LoraConfig, TaskType, get_peft_model
 import copy
-
-base_model = timm.create_model('deit_tiny_patch16_224', pretrained=True)
-
-lora_config = LoraConfig(
-    r=8,
-    lora_alpha=16,
-    target_modules=["qkv"],
-    lora_dropout=0.1,
-    bias="none"
-)
-
-target_blocks_indices = [8, 9, 10, 11] #last 4 blocks
+from typing import List
 
 class Router(nn.Module):
     def __init__(self, input_dim: int, num_experts: int, k: int = 2):
@@ -184,7 +173,7 @@ class MoE_LoRA(nn.Module):
         return x
 
 class ModifiedModel(nn.Module):
-    def __init__(self, base_model: nn.Module, num_classes: int, lora_rank: int, lora_alpha: int, num_experts: int, k: int = 2):
+    def __init__(self, base_model: nn.Module, target_blocks_indices:List[int], num_classes: int, lora_rank: int, lora_alpha: int, num_experts: int, k: int = 2):
         super().__init__()
         self.base_model = base_model
 

@@ -59,11 +59,7 @@ class PetDataset(Dataset):
         return image, label
 
 
-def create_dataloaders(
-        data_dir: Path,
-        batch_size: int,
-        image_size: int = 224
-) -> tuple[DataLoader, DataLoader, DataLoader, list[str]]:
+def create_dataloaders(data_dir: Path, batch_size: int, image_size: int = 224) -> tuple[DataLoader, DataLoader, DataLoader, list[str]]:
     """
     Creates training, validation, and test DataLoaders.
 
