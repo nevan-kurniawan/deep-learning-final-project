@@ -138,7 +138,7 @@ class MoE_LoRA(nn.Module):
 
         lora_delta_flat = torch.zeros_like(qkv_base.view(total_tokens, -1))
 
-        for i, expert in enumerate(self.experts):
+        for i, expert in enumerate(self.experts): #This method of iterating over each expert sequentially is very slow. But, for the purpose of simplicity and ease of explaining, the performance tradeoff is considered acceptable, as the dataset is small (Oxford-IIIT Pet), and the number of experts are low (8). A proper implementation should use a fully vectorized method to leverage GPU parallelization.
             mask = (top_k_indices == i) #Make a boolean mask with the shape of top_k_indices. If the i matches, it would be 1 (true), and if not, it would be 0 (false)
 
             token_indices, k_choice_indices = torch.where(mask) #token_indices is a list containing the row where there are 1 (this helps find the row index of the tokens that are sent to expert i), k_choice_indices is a list containing the columns where there are 1 (this helps find if the chosen token is the first or second choice for being sent to expert i).
