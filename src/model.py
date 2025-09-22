@@ -90,7 +90,7 @@ class Router(nn.Module):
 
         # Compute the auxiliary loss
 
-        self.curr_auxiliary_loss = self.compute_auxiliary_loss(router_probs, expert_mask)
+        self.curr_auxiliary_loss = self.compute_auxiliary_loss(router_probs, expert_mask) #This is bad practice. Loss should be returned instead of being stored as a class attribute. However, to avoid doing even more invasive model surgery by modifying the forward pass of the model, and make the code even more difficult to explain, this method is implemented. This is brittle and difficult to debug.
 
         return top_k_weights, top_k_indices
 
@@ -124,7 +124,7 @@ class MoE_LoRA(nn.Module):
         self.router = Router(input_dim, num_experts, k)
         self.experts  = nn.ModuleList([LoRA_Expert(input_dim, output_dim, lora_rank, lora_alpha) for _ in range(num_experts)])
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, **kwargs) -> torch.Tensor:
         top_k_weights, top_k_indices = self.router(x)
         batch_size = x.shape[0]
         num_tokens = x.shape[1]

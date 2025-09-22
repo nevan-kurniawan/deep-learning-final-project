@@ -6,6 +6,8 @@ from PIL import Image
 from pathlib import Path
 import os
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 class PetDataset(Dataset):
     """Custom Dataset for the Oxford-IIIT Pet Dataset."""
 
@@ -32,39 +34,36 @@ class PetDataset(Dataset):
         """Returns the total number of samples in the dataset."""
         return len(self.manifest)
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, int]:
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, int, str]:
         """
         Fetches a single sample from the dataset at the given index.
 
-        Parameters
-        ----------
-        idx : int
-            The index of the sample to fetch.
-
         Returns
         -------
-        tuple[torch.Tensor, int]
-            A tuple containing the transformed image tensor and its integer label.
+        tuple[torch.Tensor, int, str]
+            A tuple containing the transformed image, its integer label, and its filepath.
         """
-        img_path_str = self.manifest.iloc[idx]['filepath']
+        img_path_str = PROJECT_ROOT / self.manifest.iloc[idx]['filepath']
+
         label_str = self.manifest.iloc[idx]['label']
 
         image = Image.open(img_path_str).convert("RGB")
-
         label = self.class_to_idx[label_str]
 
         if self.transform:
             image = self.transform(image)
 
-        return image, label
+        # Return the filepath along with the image and label
+        return image, label, str(img_path_str)
 
 
-def create_dataloaders(data_dir: Path, batch_size: int, image_size: int = 224) -> tuple[DataLoader, DataLoader, DataLoader, list[str]]:
+def create_dataloaders(data_dir: Path, batch_size: int, image_size: int = 224, num_workers: int = 4, splits: list[str] = None) -> tuple[DataLoader, DataLoader, DataLoader, list[str]]:
     """
     Creates training, validation, and test DataLoaders.
 
     Parameters
     ----------
+    splits
     data_dir : pathlib.Path
         The path to the 'processed' data directory containing the .csv manifests.
     batch_size : int
@@ -77,6 +76,9 @@ def create_dataloaders(data_dir: Path, batch_size: int, image_size: int = 224) -
     tuple[DataLoader, DataLoader, DataLoader, list[str]]
         A tuple containing the train, validation, and test DataLoaders, and the list of class names.
     """
+    if splits is None:
+        splits = ['train', 'val', 'test']
+
     train_transform = transforms.Compose([
         transforms.RandomResizedCrop(size=image_size, scale=(0.5, 1.0)),
         transforms.RandomHorizontalFlip(),
@@ -92,17 +94,23 @@ def create_dataloaders(data_dir: Path, batch_size: int, image_size: int = 224) -
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
-    # Create Dataset instances for each split.
-    train_dataset = PetDataset(manifest_path=data_dir / "train.csv", transform=train_transform)
-    val_dataset = PetDataset(manifest_path=data_dir / "val.csv", transform=val_test_transform)
-    test_dataset = PetDataset(manifest_path=data_dir / "test.csv", transform=val_test_transform)
+    data_loaders = {}
+    class_names = []
 
-    # Create DataLoader instances.
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=os.cpu_count(),
+    if 'train' in splits:
+        train_dataset = PetDataset(manifest_path=data_dir / "train.csv", transform=train_transform)
+        data_loaders['train'] = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers,
                               pin_memory=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=os.cpu_count(),
+        class_names = train_dataset.classes  # Get class names from train set
+
+    if 'val' in splits:
+        val_dataset = PetDataset(manifest_path=data_dir / "val.csv", transform=val_test_transform)
+        data_loaders['val'] = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers,
                             pin_memory=True)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=os.cpu_count(),
+
+    if 'test' in splits:
+        test_dataset = PetDataset(manifest_path=data_dir / "test.csv", transform=val_test_transform)
+        data_loaders['test'] = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers,
                              pin_memory=True)
 
-    return train_loader, val_loader, test_loader, train_dataset.classes
+    return tuple(data_loaders.get(s) for s in splits) + (class_names,)

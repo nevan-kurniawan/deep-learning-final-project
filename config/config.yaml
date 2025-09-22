@@ -1,0 +1,29 @@
+# config/config.yaml
+
+# Parameters for the data loader
+data_params:
+  data_dir: "data/processed"
+  batch_size: 32
+  image_size: 224
+  num_workers: 4
+
+# Parameters for the model architecture
+model_params:
+  base_model_name: 'deit_tiny_patch16_224'
+  num_experts: 8
+  lora_rank: 8
+  lora_alpha: 16
+  k: 2
+  target_blocks_indices: [8, 9, 10, 11]
+
+# Parameters for the training loop
+train_params:
+  epochs: 50
+  learning_rate: 0.0005 # 5e-4
+  aux_loss_weight: 0.01
+  seed: 42
+
+# Parameters for saving outputs
+output_params:
+  model_save_dir: "outputs/models"
+  log_dir: "outputs/logs"
