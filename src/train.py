@@ -9,10 +9,11 @@ import pandas as pd
 from datetime import datetime
 from torch import nn
 from torch.optim import AdamW
+from torch.optim.lr_scheduler import CosineAnnealingLR
 from tqdm import tqdm
 import os
 
-# Import your custom modules
+# Import custom modules
 from src.model import ModifiedModel
 from src.utils import set_seed
 from src.data_loader import create_dataloaders
@@ -112,7 +113,16 @@ def train(config: dict):
     criterion = nn.CrossEntropyLoss()
     aux_loss_weight = config['train_params']['aux_loss_weight']
 
-    best_val_accuracy = 0.0
+    scheduler = CosineAnnealingLR(
+        optimizer,
+        T_max=config['train_params']['scheduler']['T_max'],
+        eta_min=config['train_params']['scheduler']['eta_min']
+    )
+
+    patience = config['train_params']['early_stopping_patience']
+    early_stopping_counter = 0
+    best_val_loss = float('inf')
+
     history = {'train_loss': [], 'val_loss': [], 'train_acc': [], 'val_acc': []}
     logging.info("Setup complete. Starting training loop...")
 
@@ -164,19 +174,31 @@ def train(config: dict):
         logging.info(f"Epoch {epoch + 1}: Train Loss: {avg_train_loss:.4f}, Train Acc: {train_accuracy:.2f}% | "
                      f"Val Loss: {avg_val_loss:.4f}, Val Acc: {val_accuracy:.2f}%")
 
-        if val_accuracy > best_val_accuracy:
-            best_val_accuracy = val_accuracy
+        scheduler.step()
+
+        if avg_val_loss < best_val_loss:
+            previous_best = best_val_loss
+            best_val_loss = avg_val_loss
+            early_stopping_counter = 0 # Reset counter
             save_path = output_dir / "best_model.pth"
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
-                'best_val_accuracy': best_val_accuracy,
+                'scheduler_state_dict': scheduler.state_dict(),
+                'best_val_loss': best_val_loss,
                 'model_config': config['model_params'],
                 'data_config': config['data_params'],
                 'class_names': class_names
             }, save_path)
-            logging.info(f"New best model saved to {save_path} with accuracy: {best_val_accuracy:.2f}%")
+            logging.info(f"Validation loss decreased from {previous_best:.4f} to {best_val_loss:.4f}. Saving new best model.")
+        else:
+            early_stopping_counter += 1
+            logging.info(
+                f"Validation loss did not improve. Early stopping counter: {early_stopping_counter}/{patience}")
+            if early_stopping_counter >= patience:
+                logging.info(f"--- Early stopping triggered after {epoch + 1} epochs. ---")
+                break
 
     logging.info("--- Training finished ---")
 
