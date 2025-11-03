@@ -1,0 +1,9 @@
+_base_: ./base_config.yaml
+
+model_params:
+  mode: 'linear_probe'
+  base_model_name: 'vit_small_patch16_224.augreg_in1k'
+
+
+train_params:
+  learning_rate: 0.001

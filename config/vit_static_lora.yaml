@@ -1,0 +1,11 @@
+_base_: ./base_config.yaml
+
+model_params:
+  mode: 'lora'
+  base_model_name: 'vit_small_patch16_224.augreg_in1k'
+  lora_rank: 32
+  lora_alpha: 64
+  target_blocks_indices: [8, 9, 10, 11]
+
+train_params:
+  learning_rate: 0.0001

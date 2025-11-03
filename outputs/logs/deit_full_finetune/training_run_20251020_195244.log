@@ -1,0 +1,125 @@
+2025-10-20 19:52:44,618 [INFO] Configuration used: {'data_params': {'data_dir': 'data/processed', 'batch_size': 32, 'image_size': 224, 'num_workers': 4}, 'model_params': {'base_model_name': 'deit_small_patch16_224', 'mode': 'full_finetune'}, 'train_params': {'epochs': 150, 'learning_rate': 2e-05, 'weight_decay': 0.05, 'seed': 42, 'early_stopping_patience': 20, 'warmup_epochs': 5, 'label_smoothing': 0.1, 'grad_clip_norm': 1.0, 'scheduler': {'T_max': 150, 'eta_min': 1e-06}, 'mixup': {'mixup_alpha': 0.8, 'cutmix_alpha': 1.0, 'prob': 1.0, 'switch_prob': 0.5, 'mode': 'batch'}}, 'output_params': {'model_save_dir': 'outputs/models', 'log_dir': 'outputs/logs'}}
+2025-10-20 19:52:44,623 [INFO] Random seed set to 42
+2025-10-20 19:52:44,655 [INFO] Using device: cuda
+2025-10-20 19:52:44,670 [INFO] Data loaded. Found 47 classes.
+2025-10-20 19:52:44,670 [INFO] Instantiating model...
+2025-10-20 19:52:45,118 [INFO] Loading pretrained weights from Hugging Face hub (timm/deit_small_patch16_224.fb_in1k)
+2025-10-20 19:52:46,000 [INFO] [timm/deit_small_patch16_224.fb_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+2025-10-20 19:52:46,270 [INFO] Model Parameter Summary: {'total_params': 21683759, 'trainable_params': 21683759, 'trainable_percentage': 100.0}
+2025-10-20 19:52:46,698 [INFO] Total GFLOPs: 9.20
+2025-10-20 19:52:46,699 [INFO] --- Model Parameter Summary ---
+2025-10-20 19:52:46,699 [INFO] Total parameters:      21,683,759
+2025-10-20 19:52:46,700 [INFO] Trainable parameters:  21,683,759
+2025-10-20 19:52:46,700 [INFO] Trainable %:           100.00%
+2025-10-20 19:52:46,700 [INFO] Total GFLOPs:          9.20
+2025-10-20 19:52:46,701 [INFO] -----------------------------
+2025-10-20 19:52:46,702 [INFO] Parameter summary saved to C:\Workspace\deep-learning-final-project\outputs\logs\deit_full_finetune\training_run_20251020_195244_summary.json
+2025-10-20 19:52:46,705 [INFO] Mixup/CutMix enabled.
+2025-10-20 19:52:46,707 [INFO] Using CrossEntropyLoss with label smoothing: 0.1
+2025-10-20 19:52:46,708 [INFO] Setup complete. Starting training loop...
+2025-10-20 19:52:46,708 [INFO] Gradient clipping enabled with max_norm: 1.0
+2025-10-20 19:54:19,298 [INFO] Epoch 1: Train Loss: 4.0068, Train Aux Loss: 0.0000, Train Acc: 2.39% | Val Loss: 3.9908, Val Acc: 1.86%| LR: 2.0E-11
+2025-10-20 19:54:19,769 [INFO] Validation loss decreased from inf to 3.9908. Saving new best model.
+2025-10-20 19:54:35,008 [INFO] Epoch 2: Train Loss: 3.9592, Train Aux Loss: 0.0000, Train Acc: 2.77% | Val Loss: 3.8615, Val Acc: 3.30%| LR: 4.0E-06
+2025-10-20 19:54:35,490 [INFO] Validation loss decreased from 3.9908 to 3.8615. Saving new best model.
+2025-10-20 19:54:50,658 [INFO] Epoch 3: Train Loss: 3.8426, Train Aux Loss: 0.0000, Train Acc: 4.95% | Val Loss: 3.6578, Val Acc: 9.79%| LR: 8.0E-06
+2025-10-20 19:54:51,155 [INFO] Validation loss decreased from 3.8615 to 3.6578. Saving new best model.
+2025-10-20 19:55:06,388 [INFO] Epoch 4: Train Loss: 3.6781, Train Aux Loss: 0.0000, Train Acc: 13.83% | Val Loss: 3.3533, Val Acc: 24.95%| LR: 1.2E-05
+2025-10-20 19:55:06,863 [INFO] Validation loss decreased from 3.6578 to 3.3533. Saving new best model.
+2025-10-20 19:55:22,138 [INFO] Epoch 5: Train Loss: 3.3397, Train Aux Loss: 0.0000, Train Acc: 31.70% | Val Loss: 2.8681, Val Acc: 40.00%| LR: 1.6E-05
+2025-10-20 19:55:22,631 [INFO] Validation loss decreased from 3.3533 to 2.8681. Saving new best model.
+2025-10-20 19:55:37,863 [INFO] Epoch 6: Train Loss: 3.0442, Train Aux Loss: 0.0000, Train Acc: 44.36% | Val Loss: 2.4614, Val Acc: 49.57%| LR: 2.0E-05
+2025-10-20 19:55:38,366 [INFO] Validation loss decreased from 2.8681 to 2.4614. Saving new best model.
+2025-10-20 19:55:53,735 [INFO] Epoch 7: Train Loss: 2.7600, Train Aux Loss: 0.0000, Train Acc: 55.64% | Val Loss: 2.1983, Val Acc: 55.53%| LR: 2.0E-05
+2025-10-20 19:55:54,266 [INFO] Validation loss decreased from 2.4614 to 2.1983. Saving new best model.
+2025-10-20 19:56:09,731 [INFO] Epoch 8: Train Loss: 2.6294, Train Aux Loss: 0.0000, Train Acc: 60.64% | Val Loss: 2.0506, Val Acc: 59.36%| LR: 2.0E-05
+2025-10-20 19:56:10,217 [INFO] Validation loss decreased from 2.1983 to 2.0506. Saving new best model.
+2025-10-20 19:56:25,594 [INFO] Epoch 9: Train Loss: 2.5460, Train Aux Loss: 0.0000, Train Acc: 64.52% | Val Loss: 1.9644, Val Acc: 60.69%| LR: 2.0E-05
+2025-10-20 19:56:26,100 [INFO] Validation loss decreased from 2.0506 to 1.9644. Saving new best model.
+2025-10-20 19:56:42,134 [INFO] Epoch 10: Train Loss: 2.4799, Train Aux Loss: 0.0000, Train Acc: 67.45% | Val Loss: 1.8988, Val Acc: 62.02%| LR: 2.0E-05
+2025-10-20 19:56:42,710 [INFO] Validation loss decreased from 1.9644 to 1.8988. Saving new best model.
+2025-10-20 19:56:57,936 [INFO] Epoch 11: Train Loss: 2.4893, Train Aux Loss: 0.0000, Train Acc: 66.97% | Val Loss: 1.8509, Val Acc: 63.62%| LR: 2.0E-05
+2025-10-20 19:56:58,435 [INFO] Validation loss decreased from 1.8988 to 1.8509. Saving new best model.
+2025-10-20 19:57:13,321 [INFO] Epoch 12: Train Loss: 2.3594, Train Aux Loss: 0.0000, Train Acc: 73.94% | Val Loss: 1.8073, Val Acc: 65.00%| LR: 2.0E-05
+2025-10-20 19:57:13,826 [INFO] Validation loss decreased from 1.8509 to 1.8073. Saving new best model.
+2025-10-20 19:57:29,078 [INFO] Epoch 13: Train Loss: 2.3287, Train Aux Loss: 0.0000, Train Acc: 73.94% | Val Loss: 1.7906, Val Acc: 65.16%| LR: 2.0E-05
+2025-10-20 19:57:29,587 [INFO] Validation loss decreased from 1.8073 to 1.7906. Saving new best model.
+2025-10-20 19:57:44,724 [INFO] Epoch 14: Train Loss: 2.4179, Train Aux Loss: 0.0000, Train Acc: 68.67% | Val Loss: 1.7633, Val Acc: 66.60%| LR: 2.0E-05
+2025-10-20 19:57:45,217 [INFO] Validation loss decreased from 1.7906 to 1.7633. Saving new best model.
+2025-10-20 19:58:00,548 [INFO] Epoch 15: Train Loss: 2.3122, Train Aux Loss: 0.0000, Train Acc: 75.74% | Val Loss: 1.7440, Val Acc: 66.86%| LR: 2.0E-05
+2025-10-20 19:58:01,071 [INFO] Validation loss decreased from 1.7633 to 1.7440. Saving new best model.
+2025-10-20 19:58:16,594 [INFO] Epoch 16: Train Loss: 2.2725, Train Aux Loss: 0.0000, Train Acc: 75.11% | Val Loss: 1.7321, Val Acc: 67.34%| LR: 2.0E-05
+2025-10-20 19:58:17,103 [INFO] Validation loss decreased from 1.7440 to 1.7321. Saving new best model.
+2025-10-20 19:58:32,736 [INFO] Epoch 17: Train Loss: 2.1654, Train Aux Loss: 0.0000, Train Acc: 78.72% | Val Loss: 1.7239, Val Acc: 67.18%| LR: 2.0E-05
+2025-10-20 19:58:33,254 [INFO] Validation loss decreased from 1.7321 to 1.7239. Saving new best model.
+2025-10-20 19:58:48,314 [INFO] Epoch 18: Train Loss: 2.1920, Train Aux Loss: 0.0000, Train Acc: 77.18% | Val Loss: 1.7144, Val Acc: 66.97%| LR: 2.0E-05
+2025-10-20 19:58:48,794 [INFO] Validation loss decreased from 1.7239 to 1.7144. Saving new best model.
+2025-10-20 19:59:03,845 [INFO] Epoch 19: Train Loss: 2.2041, Train Aux Loss: 0.0000, Train Acc: 76.91% | Val Loss: 1.7185, Val Acc: 67.93%| LR: 2.0E-05
+2025-10-20 19:59:03,845 [INFO] Validation loss did not improve. Early stopping counter: 1/20
+2025-10-20 19:59:18,983 [INFO] Epoch 20: Train Loss: 2.1151, Train Aux Loss: 0.0000, Train Acc: 79.79% | Val Loss: 1.7257, Val Acc: 67.39%| LR: 2.0E-05
+2025-10-20 19:59:18,984 [INFO] Validation loss did not improve. Early stopping counter: 2/20
+2025-10-20 19:59:34,149 [INFO] Epoch 21: Train Loss: 2.1202, Train Aux Loss: 0.0000, Train Acc: 81.33% | Val Loss: 1.7061, Val Acc: 68.14%| LR: 2.0E-05
+2025-10-20 19:59:34,639 [INFO] Validation loss decreased from 1.7144 to 1.7061. Saving new best model.
+2025-10-20 19:59:49,803 [INFO] Epoch 22: Train Loss: 2.0975, Train Aux Loss: 0.0000, Train Acc: 80.27% | Val Loss: 1.6989, Val Acc: 68.40%| LR: 1.9E-05
+2025-10-20 19:59:50,282 [INFO] Validation loss decreased from 1.7061 to 1.6989. Saving new best model.
+2025-10-20 20:00:05,520 [INFO] Epoch 23: Train Loss: 2.0989, Train Aux Loss: 0.0000, Train Acc: 78.83% | Val Loss: 1.6711, Val Acc: 68.72%| LR: 1.9E-05
+2025-10-20 20:00:06,001 [INFO] Validation loss decreased from 1.6989 to 1.6711. Saving new best model.
+2025-10-20 20:00:21,428 [INFO] Epoch 24: Train Loss: 2.0688, Train Aux Loss: 0.0000, Train Acc: 79.47% | Val Loss: 1.6842, Val Acc: 68.83%| LR: 1.9E-05
+2025-10-20 20:00:21,428 [INFO] Validation loss did not improve. Early stopping counter: 1/20
+2025-10-20 20:00:36,643 [INFO] Epoch 25: Train Loss: 2.1101, Train Aux Loss: 0.0000, Train Acc: 83.19% | Val Loss: 1.6860, Val Acc: 68.30%| LR: 1.9E-05
+2025-10-20 20:00:36,643 [INFO] Validation loss did not improve. Early stopping counter: 2/20
+2025-10-20 20:00:52,087 [INFO] Epoch 26: Train Loss: 2.0844, Train Aux Loss: 0.0000, Train Acc: 79.26% | Val Loss: 1.6868, Val Acc: 69.47%| LR: 1.9E-05
+2025-10-20 20:00:52,088 [INFO] Validation loss did not improve. Early stopping counter: 3/20
+2025-10-20 20:01:08,713 [INFO] Epoch 27: Train Loss: 2.0987, Train Aux Loss: 0.0000, Train Acc: 78.78% | Val Loss: 1.6929, Val Acc: 67.98%| LR: 1.9E-05
+2025-10-20 20:01:08,713 [INFO] Validation loss did not improve. Early stopping counter: 4/20
+2025-10-20 20:01:24,558 [INFO] Epoch 28: Train Loss: 2.0819, Train Aux Loss: 0.0000, Train Acc: 80.43% | Val Loss: 1.6873, Val Acc: 68.88%| LR: 1.9E-05
+2025-10-20 20:01:24,558 [INFO] Validation loss did not improve. Early stopping counter: 5/20
+2025-10-20 20:01:40,130 [INFO] Epoch 29: Train Loss: 2.0305, Train Aux Loss: 0.0000, Train Acc: 82.29% | Val Loss: 1.6869, Val Acc: 68.88%| LR: 1.9E-05
+2025-10-20 20:01:40,131 [INFO] Validation loss did not improve. Early stopping counter: 6/20
+2025-10-20 20:01:56,961 [INFO] Epoch 30: Train Loss: 2.0184, Train Aux Loss: 0.0000, Train Acc: 81.86% | Val Loss: 1.6671, Val Acc: 69.04%| LR: 1.9E-05
+2025-10-20 20:01:57,498 [INFO] Validation loss decreased from 1.6711 to 1.6671. Saving new best model.
+2025-10-20 20:02:14,244 [INFO] Epoch 31: Train Loss: 2.0105, Train Aux Loss: 0.0000, Train Acc: 82.77% | Val Loss: 1.6599, Val Acc: 69.41%| LR: 1.9E-05
+2025-10-20 20:02:14,814 [INFO] Validation loss decreased from 1.6671 to 1.6599. Saving new best model.
+2025-10-20 20:02:30,655 [INFO] Epoch 32: Train Loss: 1.9837, Train Aux Loss: 0.0000, Train Acc: 83.88% | Val Loss: 1.6635, Val Acc: 68.99%| LR: 1.9E-05
+2025-10-20 20:02:30,655 [INFO] Validation loss did not improve. Early stopping counter: 1/20
+2025-10-20 20:02:46,351 [INFO] Epoch 33: Train Loss: 1.9227, Train Aux Loss: 0.0000, Train Acc: 86.54% | Val Loss: 1.6853, Val Acc: 69.15%| LR: 1.8E-05
+2025-10-20 20:02:46,352 [INFO] Validation loss did not improve. Early stopping counter: 2/20
+2025-10-20 20:03:02,195 [INFO] Epoch 34: Train Loss: 2.0070, Train Aux Loss: 0.0000, Train Acc: 80.80% | Val Loss: 1.6746, Val Acc: 69.04%| LR: 1.8E-05
+2025-10-20 20:03:02,195 [INFO] Validation loss did not improve. Early stopping counter: 3/20
+2025-10-20 20:03:17,850 [INFO] Epoch 35: Train Loss: 2.0519, Train Aux Loss: 0.0000, Train Acc: 80.59% | Val Loss: 1.6734, Val Acc: 69.84%| LR: 1.8E-05
+2025-10-20 20:03:17,851 [INFO] Validation loss did not improve. Early stopping counter: 4/20
+2025-10-20 20:03:34,864 [INFO] Epoch 36: Train Loss: 1.9883, Train Aux Loss: 0.0000, Train Acc: 81.33% | Val Loss: 1.6808, Val Acc: 68.88%| LR: 1.8E-05
+2025-10-20 20:03:34,864 [INFO] Validation loss did not improve. Early stopping counter: 5/20
+2025-10-20 20:03:51,156 [INFO] Epoch 37: Train Loss: 1.9592, Train Aux Loss: 0.0000, Train Acc: 84.15% | Val Loss: 1.7027, Val Acc: 68.24%| LR: 1.8E-05
+2025-10-20 20:03:51,156 [INFO] Validation loss did not improve. Early stopping counter: 6/20
+2025-10-20 20:04:07,734 [INFO] Epoch 38: Train Loss: 2.0147, Train Aux Loss: 0.0000, Train Acc: 81.81% | Val Loss: 1.6639, Val Acc: 69.57%| LR: 1.8E-05
+2025-10-20 20:04:07,734 [INFO] Validation loss did not improve. Early stopping counter: 7/20
+2025-10-20 20:04:23,592 [INFO] Epoch 39: Train Loss: 1.9353, Train Aux Loss: 0.0000, Train Acc: 84.10% | Val Loss: 1.6738, Val Acc: 69.15%| LR: 1.8E-05
+2025-10-20 20:04:23,593 [INFO] Validation loss did not improve. Early stopping counter: 8/20
+2025-10-20 20:04:39,775 [INFO] Epoch 40: Train Loss: 2.0484, Train Aux Loss: 0.0000, Train Acc: 77.18% | Val Loss: 1.6794, Val Acc: 70.48%| LR: 1.8E-05
+2025-10-20 20:04:39,775 [INFO] Validation loss did not improve. Early stopping counter: 9/20
+2025-10-20 20:04:55,340 [INFO] Epoch 41: Train Loss: 1.9712, Train Aux Loss: 0.0000, Train Acc: 82.50% | Val Loss: 1.6610, Val Acc: 69.84%| LR: 1.7E-05
+2025-10-20 20:04:55,340 [INFO] Validation loss did not improve. Early stopping counter: 10/20
+2025-10-20 20:05:12,309 [INFO] Epoch 42: Train Loss: 1.8775, Train Aux Loss: 0.0000, Train Acc: 84.73% | Val Loss: 1.6830, Val Acc: 69.79%| LR: 1.7E-05
+2025-10-20 20:05:12,309 [INFO] Validation loss did not improve. Early stopping counter: 11/20
+2025-10-20 20:05:27,980 [INFO] Epoch 43: Train Loss: 1.8780, Train Aux Loss: 0.0000, Train Acc: 87.02% | Val Loss: 1.6808, Val Acc: 70.11%| LR: 1.7E-05
+2025-10-20 20:05:27,981 [INFO] Validation loss did not improve. Early stopping counter: 12/20
+2025-10-20 20:05:43,802 [INFO] Epoch 44: Train Loss: 1.9313, Train Aux Loss: 0.0000, Train Acc: 83.40% | Val Loss: 1.6703, Val Acc: 69.84%| LR: 1.7E-05
+2025-10-20 20:05:43,802 [INFO] Validation loss did not improve. Early stopping counter: 13/20
+2025-10-20 20:05:59,676 [INFO] Epoch 45: Train Loss: 1.8951, Train Aux Loss: 0.0000, Train Acc: 86.33% | Val Loss: 1.6844, Val Acc: 70.64%| LR: 1.7E-05
+2025-10-20 20:05:59,677 [INFO] Validation loss did not improve. Early stopping counter: 14/20
+2025-10-20 20:06:15,430 [INFO] Epoch 46: Train Loss: 1.9347, Train Aux Loss: 0.0000, Train Acc: 84.68% | Val Loss: 1.6754, Val Acc: 70.21%| LR: 1.7E-05
+2025-10-20 20:06:15,430 [INFO] Validation loss did not improve. Early stopping counter: 15/20
+2025-10-20 20:06:31,240 [INFO] Epoch 47: Train Loss: 1.9111, Train Aux Loss: 0.0000, Train Acc: 80.16% | Val Loss: 1.6707, Val Acc: 70.64%| LR: 1.6E-05
+2025-10-20 20:06:31,240 [INFO] Validation loss did not improve. Early stopping counter: 16/20
+2025-10-20 20:06:47,295 [INFO] Epoch 48: Train Loss: 1.9481, Train Aux Loss: 0.0000, Train Acc: 82.66% | Val Loss: 1.7184, Val Acc: 69.57%| LR: 1.6E-05
+2025-10-20 20:06:47,295 [INFO] Validation loss did not improve. Early stopping counter: 17/20
+2025-10-20 20:07:04,043 [INFO] Epoch 49: Train Loss: 1.9291, Train Aux Loss: 0.0000, Train Acc: 82.07% | Val Loss: 1.6705, Val Acc: 70.32%| LR: 1.6E-05
+2025-10-20 20:07:04,044 [INFO] Validation loss did not improve. Early stopping counter: 18/20
+2025-10-20 20:07:20,111 [INFO] Epoch 50: Train Loss: 1.9159, Train Aux Loss: 0.0000, Train Acc: 83.62% | Val Loss: 1.6896, Val Acc: 70.05%| LR: 1.6E-05
+2025-10-20 20:07:20,112 [INFO] Validation loss did not improve. Early stopping counter: 19/20
+2025-10-20 20:07:35,914 [INFO] Epoch 51: Train Loss: 1.8660, Train Aux Loss: 0.0000, Train Acc: 84.31% | Val Loss: 1.6852, Val Acc: 69.95%| LR: 1.6E-05
+2025-10-20 20:07:35,914 [INFO] Validation loss did not improve. Early stopping counter: 20/20
+2025-10-20 20:07:35,914 [INFO] --- Early stopping triggered after 51 epochs. ---
+2025-10-20 20:07:35,914 [INFO] --- Training finished ---
+2025-10-20 20:07:35,921 [INFO] Training history saved to C:\Workspace\deep-learning-final-project\outputs\logs\deit_full_finetune\training_run_20251020_195244_history.csv

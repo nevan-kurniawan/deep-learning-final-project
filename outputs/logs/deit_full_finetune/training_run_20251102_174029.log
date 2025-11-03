@@ -1,0 +1,10 @@
+2025-11-02 17:40:29,702 [INFO] Using log file: C:\Workspace\deep-learning-final-project\outputs\logs\deit_full_finetune\training_run_20251102_174029.log
+2025-11-02 17:40:29,730 [INFO] Using device: cuda
+2025-11-02 17:40:29,731 [INFO] Routing diagnostics requested.
+2025-11-02 17:40:30,133 [INFO] Test data loaded. Found 47 classes.
+2025-11-02 17:40:30,693 [INFO] Registering routing hooks on MoE_LoRA layers...
+2025-11-02 17:40:30,694 [WARNING] Run diagnostics requested, but no MoE_LoRA layers found.
+2025-11-02 17:41:12,710 [INFO] Creating predictions DataFrame...
+2025-11-02 17:41:12,722 [INFO] Raw predictions saved to C:\Workspace\deep-learning-final-project\outputs\logs\deit_full_finetune\test_predictions.csv
+2025-11-02 17:41:12,722 [INFO] 
+--- Inference Complete ---

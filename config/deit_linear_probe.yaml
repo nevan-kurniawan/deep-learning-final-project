@@ -1,0 +1,8 @@
+_base_: ./base_config.yaml
+
+model_params:
+  mode: 'linear_probe'
+  base_model_name: 'deit_small_patch16_224'
+
+train_params:
+  learning_rate: 0.001

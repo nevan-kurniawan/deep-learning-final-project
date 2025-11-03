@@ -1,0 +1,10 @@
+2025-11-02 17:45:04,986 [INFO] Using log file: C:\Workspace\deep-learning-final-project\outputs\logs\vit_linear_probe\training_run_20251102_174504.log
+2025-11-02 17:45:05,020 [INFO] Using device: cuda
+2025-11-02 17:45:05,020 [INFO] Routing diagnostics requested.
+2025-11-02 17:45:05,256 [INFO] Test data loaded. Found 47 classes.
+2025-11-02 17:45:05,801 [INFO] Registering routing hooks on MoE_LoRA layers...
+2025-11-02 17:45:05,802 [WARNING] Run diagnostics requested, but no MoE_LoRA layers found.
+2025-11-02 17:45:52,401 [INFO] Creating predictions DataFrame...
+2025-11-02 17:45:52,414 [INFO] Raw predictions saved to C:\Workspace\deep-learning-final-project\outputs\logs\vit_linear_probe\test_predictions.csv
+2025-11-02 17:45:52,414 [INFO] 
+--- Inference Complete ---

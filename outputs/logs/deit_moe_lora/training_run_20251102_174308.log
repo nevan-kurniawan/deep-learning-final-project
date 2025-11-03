@@ -1,0 +1,20 @@
+2025-11-02 17:43:08,925 [INFO] Using log file: C:\Workspace\deep-learning-final-project\outputs\logs\deit_moe_lora\training_run_20251102_174308.log
+2025-11-02 17:43:08,955 [INFO] Using device: cuda
+2025-11-02 17:43:08,955 [INFO] Routing diagnostics requested.
+2025-11-02 17:43:09,180 [INFO] Test data loaded. Found 47 classes.
+2025-11-02 17:43:09,695 [INFO] Registering routing hooks on MoE_LoRA layers...
+2025-11-02 17:43:09,696 [INFO] Hook registered on: base_model.blocks.8.attn
+2025-11-02 17:43:09,696 [INFO] Hook registered on: base_model.blocks.9.attn
+2025-11-02 17:43:09,696 [INFO] Hook registered on: base_model.blocks.10.attn
+2025-11-02 17:43:09,697 [INFO] Hook registered on: base_model.blocks.11.attn
+2025-11-02 17:43:50,642 [INFO] Removing routing hooks...
+2025-11-02 17:43:50,642 [INFO] Creating predictions DataFrame...
+2025-11-02 17:43:50,654 [INFO] Raw predictions saved to C:\Workspace\deep-learning-final-project\outputs\logs\deit_moe_lora\test_predictions.csv
+2025-11-02 17:43:50,654 [INFO] Processing and saving routing diagnostics...
+2025-11-02 17:43:50,656 [INFO] Saved diagnostics for layer: base_model.blocks.8.attn
+2025-11-02 17:43:50,657 [INFO] Saved diagnostics for layer: base_model.blocks.9.attn
+2025-11-02 17:43:50,659 [INFO] Saved diagnostics for layer: base_model.blocks.10.attn
+2025-11-02 17:43:50,661 [INFO] Saved diagnostics for layer: base_model.blocks.11.attn
+2025-11-02 17:43:52,607 [INFO] Routing diagnostics saved to C:\Workspace\deep-learning-final-project\outputs\logs\deit_moe_lora\routing_diagnostics.npz
+2025-11-02 17:43:52,608 [INFO] 
+--- Inference Complete ---
