@@ -1,0 +1,8 @@
+
+streamlit
+torch
+torchvision
+timm
+peft
+Pillow
+numpy
