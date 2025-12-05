@@ -8,3 +8,4 @@ data/processed/*
 !data/processed/.gitkeep
 
 /app/__pycache__
+/src/__pycache__
