@@ -6,3 +6,6 @@ timm
 peft
 Pillow
 numpy
+streamlit-webrtc
+av
+opencv-python-headless
