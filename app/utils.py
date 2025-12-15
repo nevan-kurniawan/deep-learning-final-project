@@ -6,6 +6,7 @@ from PIL import Image
 import sys
 import os
 import timm
+from huggingface_hub import hf_hub_download
 
 # Add project root to path to import src
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -55,19 +56,19 @@ def load_model():
         model_config=model_config
     )
     
-    # Load Weights
-    checkpoint_path = os.path.join(os.path.dirname(__file__), '..', 'outputs', 'models', 'deit_moe_lora', 'best_deit_moe_lora_model.pth')
-    
-    if os.path.exists(checkpoint_path):
+    # Load Weights using Hugging Face Hub
+    try:
+        checkpoint_path = hf_hub_download(repo_id="Kraffel/Texture-Classification-MoE-LoRa", filename="best_deit_moe_lora_model.pth")
         checkpoint = torch.load(checkpoint_path, map_location=device)
+        
         if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
             state_dict = checkpoint['model_state_dict']
         else:
             state_dict = checkpoint
             
         model.load_state_dict(state_dict)
-    else:
-        st.error(f"Checkpoint not found at: {checkpoint_path}")
+    except Exception as e:
+        st.error(f"Failed to load model from Hugging Face: {str(e)}")
         return None
 
     model.to(device)
