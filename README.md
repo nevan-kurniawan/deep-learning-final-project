@@ -2,10 +2,10 @@
 This repository implements a **Mixture of Experts (MoE)** architecture combined with **Low-Rank Adaptation (LoRA)** to efficiently fine-tune Vision Transformers (DeiT-Small and ViT-Small) on the Describable Textures Dataset (DTD).
 
 ## Architecture Macro view:
-![MoE Macro Architecture](report/Macro diagram.png)
+![MoE Macro Architecture](report/architecture_macro_diagram.png)
 
 ## Architecture Micro view (per-modified block):
-![MoE Micro Architecture](report/Micro diagram.png)
+![MoE Micro Architecture](report/architecture_micro_diagram.png)
 
 The project investigates whether dynamic routing (MoE) combined with parameter-efficient fine-tuning (LoRA) can outperform static LoRA and Linear Probing in fine-grained texture classification tasks while maintaining parameter efficiency.
 
