@@ -36,13 +36,28 @@ with tab1:
             # Display image
             st.image(image, caption='Uploaded Image', width="stretch")
             
+            # Initialize session state for prediction if it doesn't exist
+            if 'prediction' not in st.session_state:
+                st.session_state['prediction'] = None
+            if 'last_uploaded_file' not in st.session_state:
+                st.session_state['last_uploaded_file'] = None
+
+            # Reset prediction if a new file is uploaded
+            if st.session_state['last_uploaded_file'] != uploaded_file.name:
+                st.session_state['prediction'] = None
+                st.session_state['last_uploaded_file'] = uploaded_file.name
+
             if st.button("Classify"):
                 with st.spinner("Classifying..."):
                     class_name, confidence = utils.predict(image, model)
+                    # Store result in session state
+                    st.session_state['prediction'] = (class_name, confidence)
                 
+            # Display Result if it exists in session state
+            if st.session_state['prediction']:
+                class_name, confidence = st.session_state['prediction']
                 st.success("Classification Complete!")
                 
-                # Display Result
                 st.metric(label="Predicted Texture", value=class_name)
                 st.metric(label="Confidence", value=f"{confidence:.2f}%")
                 
