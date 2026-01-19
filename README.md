@@ -60,7 +60,9 @@ cd deep-learning-final-project
 
 
 2. **Environment Setup:**
-Create a virtual environment and install dependencies.
+First, make sure Python 3.13 is installed.
+
+Next, create a virtual environment and install dependencies.
 ```
 # Windows
 python -m venv .venv
