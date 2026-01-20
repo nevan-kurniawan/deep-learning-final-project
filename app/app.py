@@ -51,50 +51,59 @@ with tab1:
     button_placeholder = st.empty()
     result_placeholder = st.container() 
 
-    if uploaded_file is not None:
-        logger.info(f"File detected: {uploaded_file.name}")
-        try:
-            image = load_and_preprocess_image(uploaded_file)
-            image_placeholder.image(image, caption='Uploaded Image', width='stretch')
+if uploaded_file is not None:
+    logger.info(f"File detected: {uploaded_file.name}")
+    try:
+        # 1. Load image using your cached function
+        image = load_and_preprocess_image(uploaded_file)
+        image_placeholder.image(image, caption='Uploaded Image', width='stretch')
+        
+        # 2. Initialize necessary session state keys
+        if 'prediction' not in st.session_state:
+            st.session_state['prediction'] = None
+        if 'last_uploaded_file' not in st.session_state:
+            st.session_state['last_uploaded_file'] = None
+        if 'do_predict' not in st.session_state:
+            st.session_state['do_predict'] = False
+
+        # 3. Check for file changes and reset state if needed
+        if st.session_state['last_uploaded_file'] != uploaded_file.name:
+            logger.info(f"New file detected. Resetting prediction. (Old: {st.session_state['last_uploaded_file']}, New: {uploaded_file.name})")
+            st.session_state['prediction'] = None
+            st.session_state['do_predict'] = False  # Ensure we don't auto-predict on upload
+            st.session_state['last_uploaded_file'] = uploaded_file.name
+
+        # 4. Classification Button - Just sets a trigger
+        if button_placeholder.button("Classify"):
+            logger.info(f"Classify button clicked for file: {uploaded_file.name}")
+            st.session_state['do_predict'] = True
+
+        # 5. Perform prediction only if the trigger is True
+        if st.session_state['do_predict']:
+            with st.spinner("Classifying..."):
+                # Use your cached_predict function
+                class_name, confidence = cached_predict(model, image)
+                st.session_state['prediction'] = (class_name, confidence)
+                
+                # IMPORTANT: Reset the trigger immediately
+                # This stops the 1-second "heartbeat" reruns from re-entering this block
+                st.session_state['do_predict'] = False
+                logger.info(f"Classification complete and trigger reset: {class_name}")
+
+        # 6. Display Result independently of the button state
+        if st.session_state['prediction']:
+            class_name, confidence = st.session_state['prediction']
+            logger.info(f"Displaying stored prediction for {uploaded_file.name}")
+            with result_placeholder:
+                st.success("Classification Complete!")
+                st.metric(label="Predicted Texture", value=class_name)
+                st.metric(label="Confidence", value=f"{confidence:.2f}%")
+        else:
+            logger.info("No prediction stored in session state yet.")
             
-            if 'prediction' not in st.session_state:
-                st.session_state['prediction'] = None
-                logger.info("Initialized 'prediction' in session state.")
-                
-            if 'last_uploaded_file' not in st.session_state:
-                st.session_state['last_uploaded_file'] = None
-                logger.info("Initialized 'last_uploaded_file' in session state.")
-
-            # Check for file changes
-            if st.session_state['last_uploaded_file'] != uploaded_file.name:
-                logger.info(f"New file detected. Resetting prediction. (Old: {st.session_state['last_uploaded_file']}, New: {uploaded_file.name})")
-                st.session_state['prediction'] = None
-                st.session_state['last_uploaded_file'] = uploaded_file.name
-
-            # Classification Button
-            if button_placeholder.button("Classify"):
-                logger.info(f"Classify button clicked for file: {uploaded_file.name}")
-                with st.spinner("Classifying..."):
-                    class_name, confidence = cached_predict(model, image)
-                    st.session_state['prediction'] = (class_name, confidence)
-                    logger.info(f"Classification complete: {class_name} ({confidence:.2f}%)")
-                
-            # Display Result
-            if st.session_state['prediction']:
-                class_name, confidence = st.session_state['prediction']
-                logger.info(f"Displaying stored prediction for {uploaded_file.name}")
-                with result_placeholder:
-                    st.success("Classification Complete!")
-                    st.metric(label="Predicted Texture", value=class_name)
-                    st.metric(label="Confidence", value=f"{confidence:.2f}%")
-            else:
-                logger.info("No prediction stored in session state yet.")
-                
-        except Exception as e:
-            logger.error(f"Error processing image: {str(e)}", exc_info=True)
-            st.error(f"Error processing image: {e}")
-    else:
-        logger.info("No file uploaded.")
+    except Exception as e:
+        logger.error(f"Error processing image: {str(e)}", exc_info=True)
+        st.error(f"Error processing image: {e}")
 with tab2:
     st.header("Live Prediction")
     st.markdown("Ensure your camera is enabled. Models runs real-time.")
