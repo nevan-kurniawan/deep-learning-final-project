@@ -32,34 +32,32 @@ with tab1:
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file).convert('RGB')
+            st.image(image, caption='Uploaded Image', use_container_width=True)
             
-            # Display image
-            st.image(image, caption='Uploaded Image', width="stretch")
-            
-            # Initialize session state for prediction if it doesn't exist
-            if 'prediction' not in st.session_state:
-                st.session_state['prediction'] = None
-            if 'last_uploaded_file' not in st.session_state:
-                st.session_state['last_uploaded_file'] = None
+            # 1. Initialize session state keys
+            if 'prediction_result' not in st.session_state:
+                st.session_state.prediction_result = None
+            if 'current_file' not in st.session_state:
+                st.session_state.current_file = None
 
-            # Reset prediction if a new file is uploaded
-            if st.session_state['last_uploaded_file'] != uploaded_file.name:
-                st.session_state['prediction'] = None
-                st.session_state['last_uploaded_file'] = uploaded_file.name
+            # 2. Reset if the user uploads a DIFFERENT file
+            if st.session_state.current_file != uploaded_file.name:
+                st.session_state.prediction_result = None
+                st.session_state.current_file = uploaded_file.name
 
+            # 3. Perform classification
             if st.button("Classify"):
                 with st.spinner("Classifying..."):
                     class_name, confidence = utils.predict(image, model)
-                    # Store result in session state
-                    st.session_state['prediction'] = (class_name, confidence)
-                
-            # Display Result if it exists in session state
-            if st.session_state['prediction']:
-                class_name, confidence = st.session_state['prediction']
+                    # Store in session state so it survives the next rerun
+                    st.session_state.prediction_result = {"class": class_name, "conf": confidence}
+
+            # 4. Display Result (Independent of the button trigger)
+            if st.session_state.prediction_result is not None:
+                res = st.session_state.prediction_result
                 st.success("Classification Complete!")
-                
-                st.metric(label="Predicted Texture", value=class_name)
-                st.metric(label="Confidence", value=f"{confidence:.2f}%")
+                st.metric(label="Predicted Texture", value=res["class"])
+                st.metric(label="Confidence", value=f"{res['conf']:.2f}%")
                 
         except Exception as e:
             st.error(f"Error processing image: {e}")
