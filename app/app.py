@@ -29,26 +29,25 @@ with tab1:
     st.markdown("Upload an image to classify its texture.")
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-    # Define placeholders to keep the layout stable
+    # Define placeholders to anchor elements and prevent layout jumping
     image_placeholder = st.empty()
     button_placeholder = st.empty()
-    result_placeholder = st.container() # Using a container to group the results together
+    result_placeholder = st.container() 
 
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file).convert('RGB')
             
-            # Display image in the reserved slot
-            # 'use_container_width' replaces 'width="stretch"' to prevent layout jumping
-            image_placeholder.image(image, caption='Uploaded Image', use_container_width=True)
+            # Use width='stretch' as per 2026 Streamlit standards
+            image_placeholder.image(image, caption='Uploaded Image', width='stretch')
             
-            # Initialize session state for this specific file
+            # Initialize session state for persistence
             if 'prediction' not in st.session_state:
                 st.session_state['prediction'] = None
             if 'last_uploaded_file' not in st.session_state:
                 st.session_state['last_uploaded_file'] = None
 
-            # Reset prediction ONLY if the filename actually changes
+            # Reset only if a truly new file is detected
             if st.session_state['last_uploaded_file'] != uploaded_file.name:
                 st.session_state['prediction'] = None
                 st.session_state['last_uploaded_file'] = uploaded_file.name
@@ -57,10 +56,9 @@ with tab1:
             if button_placeholder.button("Classify"):
                 with st.spinner("Classifying..."):
                     class_name, confidence = utils.predict(image, model)
-                    # Store result so it survives the cloud rerun
                     st.session_state['prediction'] = (class_name, confidence)
                 
-            # Display Result exactly as you had it before
+            # Display Result exactly as per original design
             if st.session_state['prediction']:
                 class_name, confidence = st.session_state['prediction']
                 with result_placeholder:
