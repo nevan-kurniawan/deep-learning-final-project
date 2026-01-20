@@ -5,12 +5,21 @@ import cv2
 import av
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 import numpy as np
+import logging
+
+# Configure logging at the top of your script
+logging.basicConfig(
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 st.set_page_config(
     page_title="MoE-LoRA Texture Classification",
     page_icon="🎨",
     layout="centered"
 )
+
 
 st.title("MoE-LoRA Texture Classification")
 st.markdown("### Texture Classification using Mixture of Experts and Low-Rank Adaptation")
@@ -26,49 +35,58 @@ if model is None:
 tab1, tab2 = st.tabs(["Upload Image", "Live Prediction"])
 
 with tab1:
+    logger.info("--- Rerunning Tab 1 ---")
     st.markdown("Upload an image to classify its texture.")
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-    # Define placeholders to anchor elements and prevent layout jumping
     image_placeholder = st.empty()
     button_placeholder = st.empty()
     result_placeholder = st.container() 
 
     if uploaded_file is not None:
+        logger.info(f"File detected: {uploaded_file.name}")
         try:
             image = Image.open(uploaded_file).convert('RGB')
-            
-            # Use width='stretch' as per 2026 Streamlit standards
             image_placeholder.image(image, caption='Uploaded Image', width='stretch')
             
-            # Initialize session state for persistence
             if 'prediction' not in st.session_state:
                 st.session_state['prediction'] = None
+                logger.info("Initialized 'prediction' in session state.")
+                
             if 'last_uploaded_file' not in st.session_state:
                 st.session_state['last_uploaded_file'] = None
+                logger.info("Initialized 'last_uploaded_file' in session state.")
 
-            # Reset only if a truly new file is detected
+            # Check for file changes
             if st.session_state['last_uploaded_file'] != uploaded_file.name:
+                logger.info(f"New file detected. Resetting prediction. (Old: {st.session_state['last_uploaded_file']}, New: {uploaded_file.name})")
                 st.session_state['prediction'] = None
                 st.session_state['last_uploaded_file'] = uploaded_file.name
 
             # Classification Button
             if button_placeholder.button("Classify"):
+                logger.info(f"Classify button clicked for file: {uploaded_file.name}")
                 with st.spinner("Classifying..."):
                     class_name, confidence = utils.predict(image, model)
                     st.session_state['prediction'] = (class_name, confidence)
+                    logger.info(f"Classification complete: {class_name} ({confidence:.2f}%)")
                 
-            # Display Result exactly as per original design
+            # Display Result
             if st.session_state['prediction']:
                 class_name, confidence = st.session_state['prediction']
+                logger.info(f"Displaying stored prediction for {uploaded_file.name}")
                 with result_placeholder:
                     st.success("Classification Complete!")
                     st.metric(label="Predicted Texture", value=class_name)
                     st.metric(label="Confidence", value=f"{confidence:.2f}%")
+            else:
+                logger.info("No prediction stored in session state yet.")
                 
         except Exception as e:
+            logger.error(f"Error processing image: {str(e)}", exc_info=True)
             st.error(f"Error processing image: {e}")
-
+    else:
+        logger.info("No file uploaded.")
 with tab2:
     st.header("Live Prediction")
     st.markdown("Ensure your camera is enabled. Models runs real-time.")
