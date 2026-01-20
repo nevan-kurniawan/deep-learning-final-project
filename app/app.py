@@ -19,7 +19,10 @@ st.set_page_config(
     page_icon="🎨",
     layout="centered"
 )
-
+@st.cache_data(show_spinner=False)
+def load_and_preprocess_image(file_content):
+    logger.info("Actually processing the image bytes now...")
+    return Image.open(file_content).convert('RGB')
 
 st.title("MoE-LoRA Texture Classification")
 st.markdown("### Texture Classification using Mixture of Experts and Low-Rank Adaptation")
@@ -46,7 +49,7 @@ with tab1:
     if uploaded_file is not None:
         logger.info(f"File detected: {uploaded_file.name}")
         try:
-            image = Image.open(uploaded_file).convert('RGB')
+            image = load_and_preprocess_image(uploaded_file)
             image_placeholder.image(image, caption='Uploaded Image', width='stretch')
             
             if 'prediction' not in st.session_state:
