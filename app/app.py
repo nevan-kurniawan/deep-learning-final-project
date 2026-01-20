@@ -24,6 +24,11 @@ def load_and_preprocess_image(file_content):
     logger.info("Actually processing the image bytes now...")
     return Image.open(file_content).convert('RGB')
 
+@st.cache_data(show_spinner=False)
+def cached_predict(_model, _image):
+    logger.info("Executing model prediction (not from cache).")
+    return utils.predict(_image, _model)
+
 st.title("MoE-LoRA Texture Classification")
 st.markdown("### Texture Classification using Mixture of Experts and Low-Rank Adaptation")
 
@@ -70,7 +75,7 @@ with tab1:
             if button_placeholder.button("Classify"):
                 logger.info(f"Classify button clicked for file: {uploaded_file.name}")
                 with st.spinner("Classifying..."):
-                    class_name, confidence = utils.predict(image, model)
+                    class_name, confidence = cached_predict(model, image)
                     st.session_state['prediction'] = (class_name, confidence)
                     logger.info(f"Classification complete: {class_name} ({confidence:.2f}%)")
                 
