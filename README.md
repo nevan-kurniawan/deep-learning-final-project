@@ -50,8 +50,9 @@ The proposed method is compared against:
 3. **Static LoRA:** Standard Low-Rank Adaptation without routing.
 
 ## Installation
+1. **Make sure Python 3.13 is installed on your machine.**
 
-1. **Clone the repository:**
+2. **Clone the repository:**
 ```
 git clone [https://github.com/nevan-kurniawan/deep-learning-final-project.git](https://github.com/nevan-kurniawan/deep-learning-final-project.git)
 cd deep-learning-final-project
@@ -59,7 +60,7 @@ cd deep-learning-final-project
 ```
 
 
-2. **Environment Setup:**
+3. **Environment Setup:**
 Create a virtual environment and install dependencies.
 ```
 # Windows
