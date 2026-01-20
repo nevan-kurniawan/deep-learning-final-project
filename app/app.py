@@ -29,57 +29,44 @@ with tab1:
     st.markdown("Upload an image to classify its texture.")
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-    # --- UI Placeholders ---
-    # We define these slots early so the layout doesn't "jump" when content is added.
+    # Define placeholders to keep the layout stable
     image_placeholder = st.empty()
     button_placeholder = st.empty()
-    status_placeholder = st.empty()
-    result_placeholder = st.empty()
+    result_placeholder = st.container() # Using a container to group the results together
 
     if uploaded_file is not None:
         try:
-            # Load the image
             image = Image.open(uploaded_file).convert('RGB')
             
-            # 1. Initialize session state keys for persistence
-            if 'prediction_result' not in st.session_state:
-                st.session_state.prediction_result = None
-            if 'current_file' not in st.session_state:
-                st.session_state.current_file = None
-
-            # 2. Reset result ONLY if a new/different file is uploaded
-            if st.session_state.current_file != uploaded_file.name:
-                st.session_state.prediction_result = None
-                st.session_state.current_file = uploaded_file.name
-
-            # 3. Display the uploaded image in its reserved slot
+            # Display image in the reserved slot
+            # 'use_container_width' replaces 'width="stretch"' to prevent layout jumping
             image_placeholder.image(image, caption='Uploaded Image', use_container_width=True)
             
-            # 4. Show the Classify button
-            if button_placeholder.button("Classify"):
-                with status_placeholder:
-                    with st.spinner("Classifying..."):
-                        class_name, confidence = utils.predict(image, model)
-                        # Save to session state so it survives the rerun
-                        st.session_state.prediction_result = {
-                            "class": class_name, 
-                            "conf": confidence
-                        }
-                # Clear the spinner immediately after prediction
-                status_placeholder.empty()
+            # Initialize session state for this specific file
+            if 'prediction' not in st.session_state:
+                st.session_state['prediction'] = None
+            if 'last_uploaded_file' not in st.session_state:
+                st.session_state['last_uploaded_file'] = None
 
-            # 5. Display Result from Session State
-            # This ensures that even if Streamlit Cloud reruns the script,
-            # the result remains visible in its placeholder.
-            if st.session_state.prediction_result:
-                res = st.session_state.prediction_result
+            # Reset prediction ONLY if the filename actually changes
+            if st.session_state['last_uploaded_file'] != uploaded_file.name:
+                st.session_state['prediction'] = None
+                st.session_state['last_uploaded_file'] = uploaded_file.name
+
+            # Classification Button
+            if button_placeholder.button("Classify"):
+                with st.spinner("Classifying..."):
+                    class_name, confidence = utils.predict(image, model)
+                    # Store result so it survives the cloud rerun
+                    st.session_state['prediction'] = (class_name, confidence)
+                
+            # Display Result exactly as you had it before
+            if st.session_state['prediction']:
+                class_name, confidence = st.session_state['prediction']
                 with result_placeholder:
                     st.success("Classification Complete!")
-                    
-                    # Create columns for the metrics to look cleaner
-                    col1, col2 = st.columns(2)
-                    col1.metric(label="Predicted Texture", value=res["class"])
-                    col2.metric(label="Confidence", value=f"{res['conf']:.2f}%")
+                    st.metric(label="Predicted Texture", value=class_name)
+                    st.metric(label="Confidence", value=f"{confidence:.2f}%")
                 
         except Exception as e:
             st.error(f"Error processing image: {e}")
